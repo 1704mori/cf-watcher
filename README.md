@@ -45,17 +45,17 @@ Configure your containers with these labels to enable automatic tunnel routing:
 ```yaml
 labels:
   # Enable CloudWatch for this container
-  cf_watch.enabled: "true"
+  cf_watcher.enabled: "true"
   
   # Optional: Specify the network containing your cloudflared container (if not specified it will try to find cloudflared container's network)
-  cf_watch.cf_network: "cloudflare_network"
+  cf_watcher.cf_network: "cloudflare_network"
   
   # Configure routing rules
-  cf_watch.rules.subdomain: "myapp"     # Required: Subdomain for the route
-  cf_watch.rules.domain: "example.com"   # Required: Domain for the route
-  cf_watch.rules.host: "container_name"  # Required: Container hostname/IP
-  cf_watch.rules.port: "8080"           # Required: Container port
-  cf_watch.rules.path: "/api"           # Optional: Path to route
+  cf_watcher.rules.subdomain: "myapp"     # Required: Subdomain for the route
+  cf_watcher.rules.domain: "example.com"   # Required: Domain for the route
+  cf_watcher.rules.host: "container_name"  # Required: Container hostname/IP
+  cf_watcher.rules.port: "8080"           # Required: Container port
+  cf_watcher.rules.path: "/api"           # Optional: Path to route
 ```
 
 ### Docker Compose Example
@@ -66,11 +66,11 @@ services:
   myapp:
     image: nginx
     labels:
-      cf_watch.enabled: "true"
-      cf_watch.rules.subdomain: "myapp"
-      cf_watch.rules.domain: "example.com"
-      cf_watch.rules.host: "myapp"
-      cf_watch.rules.port: "80"
+      cf_watcher.enabled: "true"
+      cf_watcher.rules.subdomain: "myapp"
+      cf_watcher.rules.domain: "example.com"
+      cf_watcher.rules.host: "myapp"
+      cf_watcher.rules.port: "80"
 
   cloudwatch:
     image: cloudwatch
@@ -134,7 +134,7 @@ This project is licensed under the GNU General Public License v3.0 - see the [LI
    - Check the container labels are properly configured
 
 3. **Network detection issues:**
-   - Explicitly set the `cf_watch.cf_network` label
+   - Explicitly set the `cf_watcher.cf_network` label
    - Ensure the cloudflared container is running
 
 ## Security Considerations

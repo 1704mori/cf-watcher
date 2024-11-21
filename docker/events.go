@@ -93,7 +93,7 @@ func parseLabels(
 	labels := containerJSON.Config.Labels
 	networks := containerJSON.NetworkSettings.Networks
 
-	enabled, exists := labels["cf_watch.enabled"]
+	enabled, exists := labels["cf_watcher.enabled"]
 	if exists {
 		if enabled == "true" {
 			cfEnabled = true
@@ -104,26 +104,26 @@ func parseLabels(
 
 	if !cfEnabled {
 		return Labels{}, fmt.Errorf(
-			"cf_watch is not enabled for container %s",
+			"cf_watcher is not enabled for container %s",
 			containerJSON.Name,
 		)
 	}
 
-	// Validate cf_watch.cf_network
-	if network, exists := labels["cf_watch.cf_network"]; exists {
+	// Validate cf_watcher.cf_network
+	if network, exists := labels["cf_watcher.cf_network"]; exists {
 		cfNetwork = network
 	} else {
 		// Fallback: Find a suitable network
 		cfNetwork = findCFNetwork(cli, networks)
 		if cfNetwork == "" {
-			return Labels{}, fmt.Errorf("cf_watch.cf_network is required but could not be determined automatically, container: %s", containerJSON.Name)
+			return Labels{}, fmt.Errorf("cf_watcher.cf_network is required but could not be determined automatically, container: %s", containerJSON.Name)
 		}
 	}
 
 	// Parse rules
 	ruleData := make(map[string]interface{})
 	for key, value := range labels {
-		if strings.HasPrefix(key, "cf_watch.rules") {
+		if strings.HasPrefix(key, "cf_watcher.rules") {
 			parts := strings.Split(key, ".")
 			if len(parts) > 2 {
 				property := parts[2]
